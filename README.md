@@ -12,7 +12,7 @@ This project is designed to parse and unify tracklists for the AZ region. It aim
 
 ## Usage
 
-1. Open the page locally or at 
+1. Open the page locally or at [./ops-aztracklistparse/](https://shawnb-fanduel.github.io/ops-aztracklistparse/)
 2. Paste the incomming tracklist in the 'Input' textbox
 3. Use the 'Copy to Clipboard' button to get the resulting formatted track list
 
