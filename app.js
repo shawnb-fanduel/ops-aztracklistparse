@@ -20,13 +20,6 @@ function getTextFromInput() {
 function fn_convertList(inputString) {
 	let arr = _.compact(inputString.split("\n"));
   
-	// remove tracknames preceeded by their ARC actual names
-	for (let i = 1; i < arr.length; i++) {
-		if (arr[i].startsWith("   ")) { // Check if the row starts with spaces
-			arr.splice(i - 1, 1); // Remove the row above if the current row starts with spaces
-		}
-	}
-  
 	// check for australia's that need to be combined with the following trackname
 	for (let i = 0; i < arr.length - 1; i++) {
 		// Check if the current line contains "Australia" and the next line contains "Gosford"
@@ -37,12 +30,19 @@ function fn_convertList(inputString) {
 			arr.splice(i + 1, 1);
 		}
 	}
-  
-	// check for australia's that need to be combined with the following trackname
+	
+	// check for leg races need to be removed (extraneous detail)
 	for (let i = 0; i < arr.length - 1; i++) {
 		// Check if the current line contains "Australia" and the next line contains "Gosford"
 		if (arr[i].match(/Leg \w/)) {
-			arr[i] = "";
+			arr[i] = undefinded;
+		}
+	}
+
+	// remove tracknames preceeded by their ARC actual names
+	for (let i = 1; i < arr.length; i++) {
+		if (arr[i].startsWith("   ")) { // Check if the row starts with spaces
+			arr.splice(i - 1, 1); // Remove the row above if the current row starts with spaces
 		}
 	}
   
