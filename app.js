@@ -65,15 +65,15 @@ function fn_convertList(inputString) {
 		// ARC
 		arr[key] = arr[key].replace("Gulfstream/ARC", "");
 		arr[key] = arr[key].replace("Laurel/ARC", "");
-		arr[key] = arr[key].replace(/Concepcion.*?/, "CL - Club Hipico Concepcion (simulcast)");
-		arr[key] = arr[key].replace(/Valparaiso.*?/, "CL - Valparaiso Sporting Club (simulcast)");
-		arr[key] = arr[key].replace(/Gavea.*?/, "BR - Gavea (simulcast)");
-		arr[key] = arr[key].replace(/San Isidro.*?/, "AR - San Isidro (simulcast)");
-		arr[key] = arr[key].replace(/Palermo.*?/, "AR - Hipodromo Palermo");
-		arr[key] = arr[key].replace(/Santiago.*?/, "CL - Club Hipico Santiago (simulcast)");
-		arr[key] = arr[key].replace(/Hipodromo.*?/, "CL - Hipodromo Chile");
-		arr[key] = arr[key].replace(/Monterrico.*?/, "PE - Monterrico (simulcast)");
-		arr[key] = arr[key].replace(/Maronas.*?/, "UY - Maronas (simulcast)");
+		arr[key] = arr[key].replace(/.*Concepcion.*/, "CL - Club Hipico Concepcion (simulcast)");
+		arr[key] = arr[key].replace(/.*Valparaiso.*/, "CL - Valparaiso Sporting Club (simulcast)");
+		arr[key] = arr[key].replace(/.*Gavea.*/, "BR - Gavea (simulcast)");
+		arr[key] = arr[key].replace(/.*San Isidro.*/, "AR - San Isidro (simulcast)");
+		arr[key] = arr[key].replace(/.*Palermo.*/, "AR - Hipodromo Palermo");
+		arr[key] = arr[key].replace(/.*Santiago.*/, "CL - Club Hipico Santiago (simulcast)");
+		arr[key] = arr[key].replace(/.*Hipodromo.*/, "CL - Hipodromo Chile");
+		arr[key] = arr[key].replace(/.*Monterrico.*/, "PE - Monterrico (simulcast)");
+		arr[key] = arr[key].replace(/.*Maronas.*/, "UY - Maronas (simulcast)");
 	  
 		// Remove six spaces and any following characters anywhere in the string
 		arr[key] = arr[key].replace(/\s{10,99}\S*/g, '');
