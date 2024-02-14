@@ -33,15 +33,14 @@ function fn_convertList(inputString) {
 	
 	// check for leg races need to be removed (extraneous detail)
 	for (let i = 0; i < arr.length - 1; i++) {
-		// Check if the current line contains "Australia" and the next line contains "Gosford"
-		if (arr[i].match(/Leg \w/)) {
-			arr[i] = undefinded;
+		if (arr[i].match(/Leg\s*\w/)) {
+			arr[i] = "";
 		}
 	}
 
 	// remove tracknames preceeded by their ARC actual names
 	for (let i = 1; i < arr.length; i++) {
-		if (arr[i].startsWith("   ")) { // Check if the row starts with spaces
+		if (arr[i].startsWith("   ") && i != 0) { // Check if the row starts with spaces
 			arr.splice(i - 1, 1); // Remove the row above if the current row starts with spaces
 		}
 	}
@@ -79,7 +78,8 @@ function fn_convertList(inputString) {
 		arr[key] = arr[key].replace(/\s{10,99}\S*/g, '');
 	}
 
-	arr = arr.filter(Boolean).map(str => str.trim());
+	// rermove pure numbers and trim whitespace
+	arr = _.compact(arr.filter(Boolean).map(str => str.trim()));
 	arr.sort();
 
 	// Modified and formatted content stored in 'formattedString'
