@@ -5,7 +5,8 @@ This project is designed to parse and unify tracklists for the AZ region. It aim
 
 ## Features
 
-- **Parsing**: Parses tracklists from multiple sources.
+- **Parsing**: Parses tracklists
+- **Corrections**: Fixes spelling errors and abbreviations
 - **Unification**: Unifies and standardizes racetrack names and details.
 - **Organized Output**: Generates an organized and consolidated list of racetracks in the AZ region.
 
@@ -19,4 +20,4 @@ This project is designed to parse and unify tracklists for the AZ region. It aim
 
 ## Notes
 
-- Please document any new formats or file a bug if issues are encountered
+- Please document any new formats or file a bug if any issues are encountered
