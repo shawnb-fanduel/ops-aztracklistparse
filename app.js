@@ -57,6 +57,7 @@ function fn_convertList(inputString) {
 		// Spelling
 		arr[key] = arr[key].replace("Valeey", "Valley");
 		arr[key] = arr[key].replace("Inidianapolis", "Indianapolis");
+		arr[key] = arr[key].replace("Groudns", "Grounds");
 
 		// Incomplete names
 		arr[key] = arr[key].replace("Golden Gate", "Golden Gate Fields");
