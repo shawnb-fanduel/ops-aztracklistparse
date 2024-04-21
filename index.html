@@ -5,6 +5,7 @@
 		<link href="https://cdn.jsdelivr.net/npm/@picocss/pico@next/css/pico.min.css"  rel="stylesheet">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/string-similarity/umd/string-similarity.min.js"></script>
 		<script src="app.js"></script>
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	</head>
@@ -12,7 +13,7 @@
 	<main class="container">
 		<nav>
 			<h2>AZ TrackList Parse</h2>
-			<p>v0.4.0</p>
+			<p>v0.5.0</p>
 		</nav>
 		<br>
 		<div class="grid">
@@ -23,8 +24,10 @@
 		</div>
 		<div>
 		<h4>Output:</h4>
-		<pre><code id="outputText"></code></pre>
-		<button class="btn" data-clipboard-target="#outputText">Copy to Clipboard</button>
+		<pre><code id="outputText1"></code></pre>
+		<button class="btn" data-clipboard-target="#outputText1">Copy to Clipboard</button>
+		<h4>Disable on FDR-AZ:</h4>
+		<pre><code id="outputText2"></code></pre>
 		</div>
 	</div>
 	</main>
