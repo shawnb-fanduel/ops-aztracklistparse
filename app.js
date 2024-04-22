@@ -126,6 +126,9 @@ function fn_compareLists(para_list1, para_list2) {
 			outputArr.push(bestMatch.target);
 		}
 	}
+	if (outputArr.length == 0) {
+		return ["None"]
+	}
 	// sorting not super neccisary as the incomming AZ list is already sorted
 	return outputArr.sort();
 }
