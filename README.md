@@ -26,5 +26,5 @@ This project is designed to parse and unify tracklists for the AZ region. It aim
 ## Example
 
 <div align="center">
-	<img src="https://raw.githubusercontent.com/shawnb-fanduel/ops-aztracklistparse.ahk/master/example.png"/>
+	<img src="https://raw.githubusercontent.com/shawnb-fanduel/ops-aztracklistparse/master/example.png"/>
 </div>
