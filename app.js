@@ -14,7 +14,7 @@ function getTextFromInput() {
 	setInterval(function() {
 		try {
 			let inputString = document.getElementById("inputText").value;
-			let AZblockList = _.map(document.getElementById("azblocklist").value.split("\n"), _.trim);
+			let AZblockList = _.map(document.getElementById("inputAZBlockList").value.split("\n"), _.trim);
 			let AZtracks = fn_convertList(inputString)
 			fn_updateText("outputText1", AZtracks.join("\n"));
 			fn_updateText("outputText2", fn_compareLists(AZtracks, AZblockList).join("\n"));
