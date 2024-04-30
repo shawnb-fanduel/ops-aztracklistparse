@@ -7,17 +7,20 @@ window.addEventListener("load", function () {
 
 // variables and lists
 let settingsObj = {threshold: 0.75}
-let NYTracks = ["Alcorn", "Aqueduct", "Batavia Downs", "BEL FM Two-Day DD", "BEL Friday Card", "BEL Gold Cup-Belmont Stakes DD", "BEL Met Mile-Belmont Stakes DD", "BEL NY Stakes-Met Mile DD", "BEL Sprint Two-Day DD", "BEL Triple Play", "BEL Two-Day P6", "BEL Two-Day Pick 4", "Belmont at the Big A", "Belmont Stakes 2-Day Pick 5", "Belmont Stakes Day", "Belmont Yonkers Pick 4", "Big 3 Pick 3", "Big Apple BG Pk 4 Adv", "Big Apple Blue Grass Pk 4", "Breeders Cup Challenge Pick 6", "Brooklyn Belmont Double", "Buffalo Raceway", "Cross Country Pick 4", "Cross Country Pick 4 & Pick 5", "Cross Country Pick 5", "Del Mar Saratoga Pick 4", "Elmira Raceway", "Monmouth Cross Country Pick 4", "Monticello Raceway", "New York Los Alamitos P4", "New York New York Double", "NTRA Pick 4", "Saratoga Harness", "Saratoga Harness B", "Saratoga Race Course", "Saratoga Race Course 2-Day Double", "Saratoga Race Course 2-Day Pick 4", "Saratoga-Monmouth Pick 6", "Tioga Downs", "Tioga Downs Card 2", "Toga Toga Double", "Travers 2-Day Pick 6", "Travers Advance", "Travers Per Ensign DBL", "Vernon Downs", "Yonkers Raceway"]
 
 // #region --- MAIN ---
 // Function to continuously grab text from input field and apply to output list(s)
 function getTextFromInput() {
 	setInterval(function() {
-		let inputString = document.getElementById("inputText").value;
-		// console.log(fn_convertList(inputString))
-		let AZtracks = fn_convertList(inputString)
-		fn_updateText("outputText1", AZtracks.join("\n"));
-		fn_updateText("outputText2", fn_compareLists(AZtracks, NYTracks).join("\n"));
+		try {
+			let inputString = document.getElementById("inputText").value;
+			let AZblockList = _.map(document.getElementById("azblocklist").value.split("\n"), _.trim);
+			let AZtracks = fn_convertList(inputString)
+			fn_updateText("outputText1", AZtracks.join("\n"));
+			fn_updateText("outputText2", fn_compareLists(AZtracks, AZblockList).join("\n"));
+		  } catch (error) {
+			console.error(error);
+		  }
 	}, 500); // 500 milliseconds interval
 }
 
@@ -62,7 +65,7 @@ function fn_convertList(inputString) {
 		arr[key] = arr[key].replace("PARX", "Parx");
 
 		// Spelling
-		arr = fixSpellingMistakes(arr)
+		arr = fn_fixSpellingMistakes(arr)
 
 		// Incomplete names
 		arr[key] = arr[key].replace("Golden Gate", "Golden Gate Fields");
@@ -86,6 +89,9 @@ function fn_convertList(inputString) {
 
 	// rermove pure numbers and trim whitespace
 	arr = _.compact(arr.filter(Boolean).map(str => str.trim()));
+
+	// put each element through removeDoubleWords
+	arr = _.map(arr, fn_removeDoubleWords)
 	return arr.sort();
 }
 
@@ -96,7 +102,7 @@ function fn_updateText(id, text) {
 	element.textContent = text;
 }
 
-function fixSpellingMistakes(arr) {
+function fn_fixSpellingMistakes(arr) {
 	const misspellings = {
 		"valeey": "Valley",
 		"inidianapolis": "Indianapolis",
@@ -131,4 +137,8 @@ function fn_compareLists(para_list1, para_list2) {
 	}
 	// sorting not super neccisary as the incomming AZ list is already sorted
 	return outputArr.sort();
+}
+
+function fn_removeDoubleWords(para_string) {
+	return para_string.replace(/\b(\w+)\s+\1\b/g, '$1');
 }
