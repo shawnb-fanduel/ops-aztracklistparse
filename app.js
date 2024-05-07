@@ -103,20 +103,23 @@ function fn_updateText(id, text) {
 }
 
 function fn_fixSpellingMistakes(arr) {
-	const misspellings = {
-		"valeey": "Valley",
-		"inidianapolis": "Indianapolis",
-		"groudns": "Grounds"
-		// Add more misspellings and their corrections as needed
-	};
+	// Words to match against
+	const referenceWords = ["Valley", "Indianapolis", "Grounds", "Louisiana"];
 
-	// Constructing the regular expression pattern dynamically
-	const pattern = new RegExp('\\b(?:' + Object.keys(misspellings).join('|') + ')\\b', 'gi');
-	for (let key in arr) {
-		if (arr.hasOwnProperty(key)) {
-			arr[key] = arr[key].replace(pattern, function(matched) {
-				return misspellings[matched.toLowerCase()];
-			});
+	for (let i = 0; i < arr.length; i++) {
+		const words = _.words(arr[i]);
+		for (let j = 0; j < words.length; j++) {
+			const word = words[j];
+			for (let k = 0; k < referenceWords.length; k++) {
+				const referenceWord = referenceWords[k];
+				const matches = stringSimilarity.findBestMatch(referenceWord, [word]);
+				const similarity = matches.bestMatch.rating;
+				if (similarity > settingsObj.spellingThreshold) {
+					// Replace the word with the reference word and break
+					arr[i] = arr[i].replace(word, referenceWord);
+					break;
+				}
+			}
 		}
 	}
 	return arr;
