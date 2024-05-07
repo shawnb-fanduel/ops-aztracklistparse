@@ -5,8 +5,22 @@ window.addEventListener("load", function () {
 	getTextFromInput();
 });
 
-// variables and lists
-let settingsObj = {threshold: 0.75}
+// settings and lists
+let settingsObj = {comparisonThreshold: 0.75, spellingThreshold: 0.7}
+const arcReplacements = [
+	{ pattern: /Gulfstream\/ARC/, replacement: null },
+	{ pattern: /Laurel\/ARC/, replacement: null },
+	{ pattern: /.*Concepcion.*/, replacement: "CL - Club Hipico Concepcion (simulcast)" },
+	{ pattern: /.*Valparaiso.*/, replacement: "CL - Valparaiso Sporting Club (simulcast)" },
+	{ pattern: /.*Gavea.*/, replacement: "BR - Gavea (simulcast)" },
+	{ pattern: /.*San Isidro.*/, replacement: "AR - San Isidro (simulcast)" },
+	{ pattern: /.*Palermo.*/, replacement: "AR - Hipodromo Palermo" },
+	{ pattern: /.*Santiago.*/, replacement: "CL - Club Hipico Santiago (simulcast)" },
+	{ pattern: /.*Hipodromo.*/, replacement: "CL - Hipodromo Chile" },
+	{ pattern: /.*Monterrico.*/, replacement: "PE - Monterrico (simulcast)" },
+	{ pattern: /.*Maronas.*/, replacement: "UY - Maronas (simulcast)" }
+	// Add more ARC replacements as needed
+];
 
 // #region --- MAIN ---
 // Function to continuously grab text from input field and apply to output list(s)
@@ -18,9 +32,9 @@ function getTextFromInput() {
 			let AZtracks = fn_convertList(inputString)
 			fn_updateText("outputText1", AZtracks.join("\n"));
 			fn_updateText("outputText2", fn_compareLists(AZtracks, AZblockList).join("\n"));
-		  } catch (error) {
+		} catch (error) {
 			console.error(error);
-		  }
+		}
 	}, 500); // 500 milliseconds interval
 }
 
@@ -54,7 +68,7 @@ function fn_convertList(inputString) {
 			arr.splice(i - 1, 1); // Remove the row above if the current row starts with spaces
 		}
 	}
-  
+
 	for (let key in arr) {
 		// Preferences
 		arr[key] = arr[key].replace("Fanduel", "FanDuel Sportsbook and Horse Racing");
@@ -71,18 +85,20 @@ function fn_convertList(inputString) {
 		arr[key] = arr[key].replace("Golden Gate", "Golden Gate Fields");
 
 		// ARC
-		arr[key] = arr[key].replace("Gulfstream/ARC", "");
-		arr[key] = arr[key].replace("Laurel/ARC", "");
-		arr[key] = arr[key].replace(/.*Concepcion.*/, "CL - Club Hipico Concepcion (simulcast)");
-		arr[key] = arr[key].replace(/.*Valparaiso.*/, "CL - Valparaiso Sporting Club (simulcast)");
-		arr[key] = arr[key].replace(/.*Gavea.*/, "BR - Gavea (simulcast)");
-		arr[key] = arr[key].replace(/.*San Isidro.*/, "AR - San Isidro (simulcast)");
-		arr[key] = arr[key].replace(/.*Palermo.*/, "AR - Hipodromo Palermo");
-		arr[key] = arr[key].replace(/.*Santiago.*/, "CL - Club Hipico Santiago (simulcast)");
-		arr[key] = arr[key].replace(/.*Hipodromo.*/, "CL - Hipodromo Chile");
-		arr[key] = arr[key].replace(/.*Monterrico.*/, "PE - Monterrico (simulcast)");
-		arr[key] = arr[key].replace(/.*Maronas.*/, "UY - Maronas (simulcast)");
-	  
+		for (let i = 0; i < arr.length; i++) {
+			for (let j = 0; j < arcReplacements.length; j++) {
+				if (arcReplacements[j].pattern.test(arr[i])) {
+					if (arcReplacements[j].replacement === null) {
+						// Remove the element if the replacement is null
+						arr.splice(i, 1);
+					} else {
+						arr[i] = arr[i].replace(arcReplacements[j].pattern, arcReplacements[j].replacement);
+					}
+					// Stop searching for replacements once one is found
+					break;
+				}
+			}
+		}
 		// Remove six spaces and any following characters anywhere in the string
 		arr[key] = arr[key].replace(/\s{10,99}\S*/g, '');
 	}
@@ -131,7 +147,7 @@ function fn_compareLists(para_list1, para_list2) {
 	for (let i = 0; i < para_list1.length; i++) {
 		const { bestMatch } = stringSimilarity.findBestMatch(para_list1[i], para_list2);
 		// console.log(`Comparing "${para_list1[i]}" to "${bestMatch.target}". Similarity: ${bestMatch.rating}`);
-		if (bestMatch.rating >= settingsObj.threshold) {
+		if (bestMatch.rating >= settingsObj.comparisonThreshold) {
 			outputArr.push(bestMatch.target);
 		}
 	}
