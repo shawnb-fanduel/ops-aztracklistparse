@@ -71,18 +71,18 @@ function fn_convertList(inputString) {
 
 	for (let key in arr) {
 		// Preferences
-		arr[key] = arr[key].replace("Fanduel", "FanDuel Sportsbook and Horse Racing");
 		arr[key] = arr[key].replace("Belmont @ Big A", "Belmont at the Big A");
-	  
-
+		arr[key] = arr[key].replace("Mountaineer Park", "Mountaineer");
+		arr[key] = arr[key].replace("Horseshoe Hat Trick Turf Pick 3", "Horseshoe P3 Turf");
+		// Incomplete names
+		arr[key] = arr[key].replace("Fanduel", "FanDuel Sportsbook and Horse Racing");
+		arr[key] = arr[key].replace("Golden Gate", "Golden Gate Fields");
+		arr[key] = arr[key].replace("Saratoga", "Saratoga Race Course");
 		// Punctuation
 		arr[key] = arr[key].replace("PARX", "Parx");
-
 		// Spelling
 		arr = fn_fixSpellingMistakes(arr)
 
-		// Incomplete names
-		arr[key] = arr[key].replace("Golden Gate", "Golden Gate Fields");
 
 		// ARC
 		for (let i = 0; i < arr.length; i++) {
