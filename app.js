@@ -28,10 +28,10 @@ function getTextFromInput() {
 	setInterval(function() {
 		try {
 			let inputString = document.getElementById("inputText").value;
-			let AZblockList = _.map(document.getElementById("inputAZBlockList").value.split("\n"), _.trim);
+			let AZblockList = _.map(document.getElementById("inputBlockList").value.split("\n"), _.trim);
 			let AZtracks = fn_convertList(inputString)
-			fn_updateText("outputText1", AZtracks.join("\n"));
-			fn_updateText("outputText2", fn_compareLists(AZtracks, AZblockList).join("\n"));
+			fn_updateText("outputText1", fn_compareLists(AZtracks, AZblockList).join("\n"));
+			fn_updateText("outputText2", fn_compareLists(AZtracks, AZblockList, false).join("\n"));
 		} catch (error) {
 			console.error(error);
 		}
@@ -141,22 +141,30 @@ function fn_fixSpellingMistakes(arr) {
 	return arr;
 }
 
-function fn_compareLists(para_list1, para_list2) {
+function fn_compareLists(para_list1, para_list2, returnFirst = true) {
 	let outputArr = [];
-
 	for (let i = 0; i < para_list1.length; i++) {
 		const { bestMatch } = stringSimilarity.findBestMatch(para_list1[i], para_list2);
-		// console.log(`Comparing "${para_list1[i]}" to "${bestMatch.target}". Similarity: ${bestMatch.rating}`);
+		// Check if the similarity exceeds the threshold
 		if (bestMatch.rating >= settingsObj.comparisonThreshold) {
-			outputArr.push(bestMatch.target);
+			if (!returnFirst) {
+				// Collect blocked items if returnFirst is false
+				outputArr.push(para_list1[i]);
+			}
+		} else {
+			if (returnFirst) {
+				// Collect allowed items if returnFirst is true
+				outputArr.push(para_list1[i]);
+			}
 		}
 	}
-	if (outputArr.length == 0) {
-		return ["None"]
+	// If no items match the criteria, return ["None"]
+	if (outputArr.length === 0) {
+		return ["None"];
 	}
-	// sorting not super neccisary as the incomming AZ list is already sorted
-	return outputArr.sort();
+	return outputArr.sort(); // Return the result, sorted
 }
+
 
 function fn_removeDoubleWords(para_string) {
 	return para_string.replace(/\b(\w+)\s+\1\b/g, '$1');
