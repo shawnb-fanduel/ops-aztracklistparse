@@ -106,6 +106,11 @@ function fn_convertList(inputString) {
 	// rermove pure numbers and trim whitespace
 	arr = _.compact(arr.filter(Boolean).map(str => str.trim()));
 
+	// remove cancelled tracks
+	arr = arr.filter(Boolean)
+		.map(str => str.trim())
+		.filter(str => !/cancelled|canceled/i.test(str))
+
 	// put each element through removeDoubleWords
 	arr = _.map(arr, fn_removeDoubleWords)
 	return arr.sort();
