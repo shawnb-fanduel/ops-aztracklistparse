@@ -13,7 +13,7 @@
 	<main class="container">
 		<nav>
 			<h2>AZ TrackList Parse</h2>
-			<p>v0.6.0</p>
+			<p>v0.7.0</p>
 		</nav>
 		<br>
 		<div class="grid">
@@ -22,15 +22,59 @@
 			<textarea placeholder="PARX Racing" id="inputText" rows="20"></textarea>
 	<details open>
 		<summary>Options: </summary>
-		  <h4>Blocklist:</h4>
-		<textarea placeholder="" aria-label="a large text area" id="inputBlockList">
-Golden State Racing at Pleasanton</textarea>
+			<h4>
+			Comparison Threshold: <span id="comparisonThresholdNum"></span>
+			<input type="range" id="comparisonThreshold" value="84"/>
+			</h4>
+			<h4>Allow List:</h4>
+			<textarea placeholder="" aria-label="a large text area" id="inputBlockList">
+Aqueduct
+Assiniboia Downs
+Belterra Park
+Canterbury Park
+Century Mile
+Charles Town
+Coast to Coast Pick 5
+Colonial Downs
+Cross Country Pick 5
+Delaware Park
+Delta Downs
+Ellis Park
+Ellis Park Turf Pick 3
+Emerald Downs
+Evangeline Downs
+Fairmount Park
+Finger Lakes
+Fort Erie
+Gulfstream Park
+Gulfstream Park Simulcast
+Hastings
+Hawthorne
+Horseshoe Indianapolis
+Horseshoe P3 Turf
+Keeneland
+Los Alamitos Quarter Horse
+Louisiana Downs
+Monmouth Park
+Mountaineer
+Parx Racing
+Penn National
+Prairie Meadows
+Presque Isle Downs
+Retama Park
+Saratoga Race Course
+Thistledown
+Will Rogers Downs
+Woodbine</textarea>
 	  </details>
 		</div>
 		<div>
 		<h4>Output:</h4>
 		<pre><code id="outputText1"></code></pre>
-		<button class="btn" data-clipboard-target="#outputText1">Copy to Clipboard</button>
+		<div class="grid">
+			<button data-clipboard-target="#outputText1">Copy to Clipboard</button>
+			<button class="secondary" id="copyAllBtn">Copy All (Even Not Permitted)</button>
+		</div>
 		<h4>Not Permitted:</h4>
 		<pre><code id="outputText2"></code></pre>
 		</div>

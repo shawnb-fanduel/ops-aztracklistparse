@@ -3,10 +3,44 @@ window.addEventListener("load", function () {
 	new ClipboardJS(".btn");
 	// Start grabbing text from the input field, also starts its own timer to repeat
 	getTextFromInput();
+
+	// Add custom copy logic for the second button
+	const copyAllBtn = document.getElementById("copyAllBtn");
+
+	if (copyAllBtn) {
+		copyAllBtn.addEventListener("click", function () {
+			const text1 = document.getElementById("outputText1")?.textContent || '';
+			const text2 = document.getElementById("outputText2")?.textContent || '';
+
+			const combinedSorted = [...text1.split('\n'), ...text2.split('\n')]
+				.map(line => line.trim())
+				.filter(line => line.length > 0)
+				.sort()
+				.join('\n');
+
+			// Fallback copy using a hidden textarea
+			const textarea = document.createElement("textarea");
+			textarea.value = combinedSorted;
+			textarea.style.position = "fixed"; // prevent scroll jump
+			textarea.style.opacity = "0";
+			document.body.appendChild(textarea);
+			textarea.focus();
+			textarea.select();
+
+			try {
+				document.execCommand("copy");
+			} catch (err) {
+				console.error("Copy failed", err);
+			}
+
+			document.body.removeChild(textarea);
+		});
+	}
 });
 
+
 // settings and lists
-let settingsObj = {comparisonThreshold: 0.75, spellingThreshold: 0.7}
+let settingsObj = {spellingThreshold: 0.7}
 const arcReplacements = [
 	{ pattern: /Gulfstream\/ARC/, replacement: null },
 	{ pattern: /Laurel\/ARC/, replacement: null },
@@ -27,6 +61,9 @@ const arcReplacements = [
 function getTextFromInput() {
 	setInterval(function() {
 		try {
+			settingsObj.comparisonThreshold = getComparisonThreshold();
+			document.getElementById("comparisonThresholdNum").textContent = settingsObj.comparisonThreshold;
+
 			let inputString = document.getElementById("inputText").value;
 			let AZblockList = _.map(document.getElementById("inputBlockList").value.split("\n"), _.trim);
 			let AZtracks = fn_convertList(inputString)
@@ -148,28 +185,30 @@ function fn_fixSpellingMistakes(arr) {
 
 function fn_compareLists(para_list1, para_list2, returnFirst = true) {
 	let outputArr = [];
+
 	for (let i = 0; i < para_list1.length; i++) {
 		const { bestMatch } = stringSimilarity.findBestMatch(para_list1[i], para_list2);
 		// Check if the similarity exceeds the threshold
 		if (bestMatch.rating >= settingsObj.comparisonThreshold) {
-			if (!returnFirst) {
-				// Collect blocked items if returnFirst is false
-				outputArr.push(para_list1[i]);
-			}
-		} else {
 			if (returnFirst) {
 				// Collect allowed items if returnFirst is true
 				outputArr.push(para_list1[i]);
 			}
+		} else {
+			if (!returnFirst) {
+				// Collect disallowed (non-matching) items if returnFirst is false
+				outputArr.push(para_list1[i]);
+			}
 		}
 	}
-	// If no items match the criteria, return ["None"]
-	if (outputArr.length === 0) {
-		return ["None"];
-	}
-	return outputArr.sort(); // Return the result, sorted
+	// Return ["None"] if no items matched the criteria
+	return outputArr.length === 0 ? ["None"] : outputArr.sort();
 }
 
+function getComparisonThreshold() {
+	let thresholdElement = document.getElementById("comparisonThreshold");
+	return thresholdElement ? thresholdElement.value / 100 : 0.75;
+}
 
 function fn_removeDoubleWords(para_string) {
 	return para_string.replace(/\b(\w+)\s+\1\b/g, '$1');
