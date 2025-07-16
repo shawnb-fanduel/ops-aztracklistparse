@@ -52,7 +52,8 @@ const arcReplacements = [
 	{ pattern: /.*Santiago.*/, replacement: "CL - Club Hipico Santiago (simulcast)" },
 	{ pattern: /.*Hipodromo.*/, replacement: "CL - Hipodromo Chile" },
 	{ pattern: /.*Monterrico.*/, replacement: "PE - Monterrico (simulcast)" },
-	{ pattern: /.*Maronas.*/, replacement: "UY - Maronas (simulcast)" }
+	{ pattern: /.*Maronas.*/, replacement: "UY - Maronas (simulcast)" },
+	{ pattern: /.*Remon.*/, replacement: "PM - Remon (simulcast)" }
 	// Add more ARC replacements as needed
 ];
 
